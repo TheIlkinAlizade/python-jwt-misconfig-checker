@@ -1,0 +1,2 @@
+class TokenParseError(Exception):
+    pass
