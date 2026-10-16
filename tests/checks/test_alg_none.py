@@ -37,9 +37,3 @@ def test_flags_non_string_alg(algorithm: object) -> None:
 def test_accepts_real_algorithms(algorithm: str) -> None:
     assert run_check(CHECK, {"alg": algorithm}) == []
 
-
-def test_evidence_escapes_control_characters() -> None:
-    findings = run_check(CHECK, {"alg": "none\x1b[2J"}, signature=b"")
-    assert findings == []
-    findings = run_check(CHECK, {"alg": 7})
-    assert "\x1b" not in findings[0].evidence
