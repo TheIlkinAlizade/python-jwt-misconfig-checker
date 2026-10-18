@@ -71,9 +71,11 @@ class TimeClaimsCheck:
         issued = as_datetime(token.payload.get("iat")) or now
         lifetime = expiry - issued
         if lifetime > EXCESSIVE_LIFETIME:
-            return [self.report(Severity.HIGH, "The token lifetime exceeds 30 days", "exp", str(lifetime))]
+            message = "The token lifetime exceeds 30 days"
+            return [self.report(Severity.HIGH, message, "exp", str(lifetime))]
         if lifetime > LONG_LIFETIME:
-            return [self.report(Severity.MEDIUM, "The token lifetime exceeds 24 hours", "exp", str(lifetime))]
+            message = "The token lifetime exceeds 24 hours"
+            return [self.report(Severity.MEDIUM, message, "exp", str(lifetime))]
         return []
 
     def assess_future(

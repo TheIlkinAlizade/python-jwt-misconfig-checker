@@ -1,3 +1,4 @@
+from collections.abc import Mapping
 from datetime import UTC, datetime
 
 import pytest
@@ -14,8 +15,8 @@ HOUR = 3600
 DAY = 24 * HOUR
 
 
-def severities(payload: dict[str, object]) -> list[Severity]:
-    findings = run_check(CHECK, {"alg": "RS256"}, payload, context=CONTEXT)
+def severities(payload: Mapping[str, object]) -> list[Severity]:
+    findings = run_check(CHECK, {"alg": "RS256"}, dict(payload), context=CONTEXT)
     return [finding.severity for finding in findings]
 
 

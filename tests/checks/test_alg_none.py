@@ -36,4 +36,3 @@ def test_flags_non_string_alg(algorithm: object) -> None:
 @pytest.mark.parametrize("algorithm", ["HS256", "RS256", "ES256", "EdDSA"])
 def test_accepts_real_algorithms(algorithm: str) -> None:
     assert run_check(CHECK, {"alg": algorithm}) == []
-

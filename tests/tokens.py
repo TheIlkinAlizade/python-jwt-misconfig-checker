@@ -18,7 +18,5 @@ def build_token(
     signature: bytes = b"signature",
 ) -> str:
     return (
-        f"{encode_json_segment(header)}."
-        f"{encode_json_segment(payload)}."
-        f"{encode_segment(signature)}"
+        f"{encode_json_segment(header)}.{encode_json_segment(payload)}.{encode_segment(signature)}"
     )

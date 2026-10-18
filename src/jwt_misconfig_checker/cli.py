@@ -42,6 +42,5 @@ def analyze(
         typer.echo("No findings.")
     for finding in findings:
         typer.echo(
-            f"{finding.severity.name} {finding.check_id} "
-            f"{finding.message} [{finding.location}]"
+            f"{finding.severity.name} {finding.check_id} {finding.message} [{finding.location}]"
         )
