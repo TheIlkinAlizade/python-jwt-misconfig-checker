@@ -1,4 +1,5 @@
 MASK = "***"
+VISIBLE_PREFIX = 8
 
 
 def mask_email(value: str) -> str:
@@ -10,5 +11,6 @@ def describe_length(value: str) -> str:
     return f"{MASK} ({len(value)} characters)"
 
 
-def describe_token(token: str) -> str:
-    return f"{token[:6]}{MASK}" if len(token) > 12 else MASK
+def redact_token(token: str) -> str:
+    cleaned = token.strip()
+    return f"{cleaned[:VISIBLE_PREFIX]}{MASK} ({len(cleaned)} characters)"
