@@ -1,3 +1,4 @@
+from jwt_misconfig_checker.checks.alg_confusion import AlgorithmConfusionCheck
 from jwt_misconfig_checker.checks.alg_none import AlgNoneCheck
 from jwt_misconfig_checker.checks.header_params import HeaderParametersCheck
 from jwt_misconfig_checker.checks.header_typ import HeaderTypCheck
@@ -11,6 +12,7 @@ from jwt_misconfig_checker.models import Check
 DEFAULT_CHECKS: tuple[Check, ...] = (
     AlgNoneCheck(),
     WeakAlgorithmCheck(),
+    AlgorithmConfusionCheck(),
     HeaderParametersCheck(),
     KidInjectionCheck(),
     HeaderTypCheck(),

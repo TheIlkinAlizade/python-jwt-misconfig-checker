@@ -24,7 +24,7 @@ def test_runner_reports_findings_for_bad_token() -> None:
 
 
 def test_runner_reports_nothing_for_clean_token() -> None:
-    token = parse_token(build_token({"alg": "RS256", "typ": "JWT"}, GOOD_PAYLOAD))
+    token = parse_token(build_token({"alg": "HS256", "typ": "JWT"}, GOOD_PAYLOAD))
     assert run_checks(token, CONTEXT) == []
 
 
