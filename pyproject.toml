@@ -7,7 +7,7 @@ name = "python-jwt-misconfig-checker"
 version = "0.1.0"
 description = "Offline CLI that analyzes JWTs for security misconfigurations, with severity ratings, explanations, and fix advice. Defensive and educational."
 readme = "README.md"
-license = "none yet"
+license = "MIT"
 requires-python = ">=3.11"
 dependencies = [
     "typer>=0.12",
