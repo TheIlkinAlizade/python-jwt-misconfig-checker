@@ -85,3 +85,11 @@ def test_error_messages_do_not_echo_the_token() -> None:
     assert HEADER not in str(excinfo.value)
     assert PAYLOAD not in str(excinfo.value)
     assert SIGNATURE not in str(excinfo.value)
+
+
+def test_rejects_payload_nested_beyond_the_limit() -> None:
+    payload: dict[str, object] = {"x": 1}
+    for _ in range(50):
+        payload = {"a": payload}
+    with pytest.raises(TokenParseError, match="nested too deeply"):
+        parse_token(build_token({"alg": "HS256"}, payload))

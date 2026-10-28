@@ -7,6 +7,7 @@ from typing import Any, NoReturn
 from jwt_misconfig_checker.errors import TokenParseError
 from jwt_misconfig_checker.models import ParsedToken
 
+MAX_JSON_DEPTH = 32
 MAX_TOKEN_LENGTH = 32_768
 BASE64URL_PATTERN = re.compile(r"[A-Za-z0-9_-]*")
 
@@ -56,6 +57,18 @@ def reject_constant(value: str) -> NoReturn:
     raise TokenParseError("contains a non-standard number constant")
 
 
+def exceeds_depth(value: Any, limit: int) -> bool:
+    stack = [(value, 1)]
+    while stack:
+        current, depth = stack.pop()
+        if isinstance(current, dict | list):
+            if depth > limit:
+                return True
+            children = current.values() if isinstance(current, dict) else current
+            stack.extend((child, depth + 1) for child in children)
+    return False
+
+
 def parse_json_object(data: bytes, name: str) -> dict[str, Any]:
     try:
         text = data.decode("utf-8")
@@ -73,6 +86,8 @@ def parse_json_object(data: bytes, name: str) -> dict[str, Any]:
         raise TokenParseError(f"{name} is not valid JSON") from error
     if not isinstance(value, dict):
         raise TokenParseError(f"{name} must be a JSON object")
+    if exceeds_depth(value, MAX_JSON_DEPTH):
+        raise TokenParseError(f"{name} is nested too deeply")
     return value
 
 

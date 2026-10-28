@@ -77,13 +77,6 @@ def test_list_items_are_scanned() -> None:
     ]
 
 
-def test_deep_nesting_is_bounded() -> None:
-    payload: dict[str, object] = {"password": "x"}
-    for _ in range(50):
-        payload = {"a": payload}
-    assert findings_for(payload) == []
-
-
 def test_evidence_never_contains_the_secret() -> None:
     findings = run_check(CHECK, {"alg": "RS256"}, {"password": "hunter2", "data": AWS_KEY})
     assert all("hunter2" not in finding.evidence for finding in findings)
@@ -93,3 +86,10 @@ def test_evidence_never_contains_the_secret() -> None:
 def test_email_evidence_is_masked() -> None:
     findings = run_check(CHECK, {"alg": "RS256"}, {"contact": "alice@example.com"})
     assert findings[0].evidence == "a***@example.com"
+
+
+def test_fields_beyond_the_scan_depth_are_ignored() -> None:
+    payload: dict[str, object] = {"password": "x"}
+    for _ in range(20):
+        payload = {"a": payload}
+    assert findings_for(payload) == []
